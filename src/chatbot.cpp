@@ -9,37 +9,37 @@
 #include "chatbot.h"
 
 // constructor WITHOUT memory allocation
-ChatBot::ChatBot()
-{
-    // invalidate data handles
-    _image = nullptr;
-    _chatLogic = nullptr;
-    _rootNode = nullptr;
-}
+// ChatBot::ChatBot()
+// {
+//     // invalidate data handles
+//     _image = nullptr;
+//     _chatLogic = nullptr;
+//     _rootNode = nullptr;
+// }
 
 // constructor WITH memory allocation
-ChatBot::ChatBot(std::string filename)
-{
-    std::cout << "ChatBot Constructor" << std::endl;
+// ChatBot::ChatBot(std::string filename)
+// {
+//     std::cout << "ChatBot Constructor" << std::endl;
     
-    // invalidate data handles
-    _chatLogic = nullptr;
-    _rootNode = nullptr;
+//     // invalidate data handles
+//     _chatLogic = nullptr;
+//     _rootNode = nullptr;
 
-    // load image into heap memory
-    _image = new wxBitmap(filename, wxBITMAP_TYPE_PNG);
-}
+//     // load image into heap memory
+//     _image = new wxBitmap(filename, wxBITMAP_TYPE_PNG);
+// }
 
 ChatBot::~ChatBot()
 {
     std::cout << "ChatBot Destructor" << std::endl;
 
     // deallocate heap memory
-    if(_image != NULL) // Attention: wxWidgets used NULL and not nullptr
-    {
-        delete _image;
-        _image = NULL;
-    }
+    // if(_image != NULL) // Attention: wxWidgets used NULL and not nullptr
+    // {
+    //     delete _image;
+    //     _image = NULL;
+    // }
 }
 
 //// STUDENT CODE
@@ -48,21 +48,28 @@ ChatBot::~ChatBot()
 ////
 //// EOF STUDENT CODE
 
-void ChatBot::ReceiveMessageFromUser(std::string message)
+void ChatBot::ReceiveMessageFromUser(std::string msge)
 {
     // loop over all edges and keywords and compute Levenshtein distance to query
     typedef std::pair<GraphEdge *, int> EdgeDist;
     std::vector<EdgeDist> levDists; // format is <ptr,levDist>
 
-    for (size_t i = 0; i < _currentNode->GetNumberOfChildEdges(); ++i)
-    {
-        GraphEdge *edge = _currentNode->GetChildEdgeAtIndex(i);
-        for (auto keyword : edge->GetKeywords())
-        {
-            EdgeDist ed{edge, ComputeLevenshteinDistance(keyword, message)};
-            levDists.push_back(ed);
+    for(auto edge: _currentNode->GetEdgesToChildNodes()){
+        for(auto key: edge->GetKeywords()){
+            EdgeDist edg{edge, ComputeLevenshteinDistance(key, msge)};
+            levDists.push_back(edg);
         }
     }
+
+    // for (size_t i = 0; i < _currentNode->GetNumberOfChildEdges(); ++i)
+    // {
+    //     GraphEdge *edge = _currentNode->GetChildEdgeAtIndex(i);
+    //     for (auto keyword : edge->GetKeywords())
+    //     {
+    //         EdgeDist ed{edge, ComputeLevenshteinDistance(keyword, message)};
+    //         levDists.push_back(ed);
+    //     }
+    // }
 
     // select best fitting edge to proceed along
     GraphNode *newNode;
@@ -86,15 +93,18 @@ void ChatBot::SetCurrentNode(GraphNode *node)
 {
     // update pointer to current node
     _currentNode = node;
-
+    
     // select a random node answer (if several answers should exist)
     std::vector<std::string> answers = _currentNode->GetAnswers();
+    
     std::mt19937 generator(int(std::time(0)));
     std::uniform_int_distribution<int> dis(0, answers.size() - 1);
     std::string answer = answers.at(dis(generator));
 
     // send selected node answer to user
-    _chatLogic->SendMessageToUser(answer);
+    // _chatLogic->SendMessageToUser(answer);
+    _chatLogic->GetChatBotPanelDialog()->PrintChatbotResponse(answer);
+    // std::cout << "ChatBot SetCurrentNode Here" << std::endl;
 }
 
 int ChatBot::ComputeLevenshteinDistance(std::string s1, std::string s2)

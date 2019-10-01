@@ -33,7 +33,11 @@ private:
 
     // proprietary functions
     template <typename T>
-    void AddAllTokensToElement(std::string tokenID, tokenlist &tokens, T &element);
+    //void AddAllTokensToElement(std::string tokenID, tokenlist &tokens, T &element);
+    void AddAllTokensToElement(std::string tokenID, tokenlist &tokens, T *element);    
+
+    template <typename T>
+    T *AddToElementList(int id, std::vector<T *> &elements); // checks wether a given edge or node already exist based on their id
 
 public:
     // constructor / destructor
@@ -41,14 +45,21 @@ public:
     ~ChatLogic();
 
     // getter / setter
-    void SetPanelDialogHandle(ChatBotPanelDialog *panelDialog);
+    //void SetPanelDialogHandle(ChatBotPanelDialog *panelDialog);
     void SetChatbotHandle(ChatBot *chatbot);
+
+    ChatBotPanelDialog *GetChatBotPanelDialog() { return _panelDialog; }
+    ChatBot *GetChatBot() { 
+        //std::cout << "ChatBot Move Constructor" << std::endl; 
+        return _chatBot; 
+        }
+    void SetPanelDialogHandle(ChatBotPanelDialog *dialog) { _panelDialog = dialog; }
 
     // proprietary functions
     void LoadAnswerGraphFromFile(std::string filename);
-    void SendMessageToChatbot(std::string message);
-    void SendMessageToUser(std::string message);
-    wxBitmap *GetImageFromChatbot();
+    //void SendMessageToChatbot(std::string message);
+    //void SendMessageToUser(std::string message);
+    //wxBitmap *GetImageFromChatbot();
 };
 
 #endif /* CHATLOGIC_H_ */

@@ -1,3 +1,4 @@
+#include "chatbot.h"
 #include "graphedge.h"
 #include "graphnode.h"
 
@@ -6,16 +7,16 @@ GraphNode::GraphNode(int id)
     _id = id;
 }
 
-GraphNode::~GraphNode()
-{
-    //// STUDENT CODE
-    ////
+// GraphNode::~GraphNode()
+// {
+//     //// STUDENT CODE
+//     ////
+//     std::cout << "ChatBot Destructor" << std::endl;
+//     delete _chatBot; 
 
-    delete _chatBot; 
-
-    ////
-    //// EOF STUDENT CODE
-}
+//     ////
+//     //// EOF STUDENT CODE
+// }
 
 void GraphNode::AddToken(std::string token)
 {
@@ -36,25 +37,27 @@ void GraphNode::AddEdgeToChildNode(GraphEdge *edge)
 ////
 void GraphNode::MoveChatbotHere(ChatBot *chatbot)
 {
+    std::cout << "ChatBot Move Assignment Operator" << std::endl;
     _chatBot = chatbot;
     _chatBot->SetCurrentNode(this);
 }
 
 void GraphNode::MoveChatbotToNewNode(GraphNode *newNode)
 {
+    std::cout << "ChatBot Move Constructor" << std::endl;    
     newNode->MoveChatbotHere(_chatBot);
     _chatBot = nullptr; // invalidate pointer at source
 }
 ////
 //// EOF STUDENT CODE
 
-GraphEdge *GraphNode::GetChildEdgeAtIndex(int index)
-{
-    //// STUDENT CODE
-    ////
+// GraphEdge *GraphNode::GetChildEdgeAtIndex(int index)
+// {
+//     //// STUDENT CODE
+//     ////
 
-    return _childEdges[index];
+//     return _childEdges[index];
 
-    ////
-    //// EOF STUDENT CODE
-}
+//     ////
+//     //// EOF STUDENT CODE
+// }

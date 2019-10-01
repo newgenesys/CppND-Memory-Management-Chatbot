@@ -3,11 +3,12 @@
 
 #include <vector>
 #include <string>
-#include "chatbot.h"
+// #include "chatbot.h"
 
 
 // forward declarations
 class GraphEdge;
+class ChatBot;
 
 class GraphNode
 {
@@ -32,12 +33,13 @@ private:
 public:
     // constructor / destructor
     GraphNode(int id);
-    ~GraphNode();
+    //~GraphNode();
 
     // getter / setter
     int GetID() { return _id; }
     int GetNumberOfChildEdges() { return _childEdges.size(); }
-    GraphEdge *GetChildEdgeAtIndex(int index);
+    std::vector<GraphEdge *> GetEdgesToChildNodes() { return _childEdges; };
+    //GraphEdge *GetChildEdgeAtIndex(int index);//remove
     std::vector<std::string> GetAnswers() { return _answers; }
     int GetNumberOfParents() { return _parentEdges.size(); }
 
